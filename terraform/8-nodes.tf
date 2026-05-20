@@ -45,12 +45,12 @@ resource "aws_eks_node_group" "general" {
   subnet_ids      = [aws_subnet.private_zone1.id, aws_subnet.private_zone2.id]
 
   capacity_type   = "ON_DEMAND"
-  instance_types  = ["t3.micro"]
+  instance_types  = ["t3.small"]
 
   scaling_config {
     desired_size = 2
-    max_size     = 2
-    min_size     = 1
+    max_size     = 3
+    min_size     = 2
   }
 
   labels = {

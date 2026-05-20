@@ -33,6 +33,8 @@ resource"aws_eks_cluster" "eks" {
     endpoint_public_access = true
     endpoint_private_access = false
 
+    security_group_ids = [aws_security_group.eks.id]
+
     subnet_ids = [
       aws_subnet.private_zone1.id,
       aws_subnet.private_zone2.id
@@ -45,4 +47,15 @@ resource"aws_eks_cluster" "eks" {
   }
 
   depends_on = [aws_iam_role_policy_attachment.eks]
+}
+
+resource "aws_security_group" "eks" {
+
+  name   = "${local.env}-${local.eks_name}-sg"
+
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    "karpenter.sh/discovery" = local.eks_name
+  }
 }
